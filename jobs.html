@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #jobDetails {
+            margin-top: 30px;
+            display: none;
+        }
+
+        #jobDetails h2 {
+            margin-top: 20px;
+        }
+
+        #jobsList {
+            list-style: none;
+            padding: 0;
+        }
+
+        #jobsList li {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Job Details</h1>
+    <label for="state">Select State:</label>
+    <select id="state" name="state" onchange="populateDistricts()">
+        <option value="">Select a State</option>
+        <option value="Andhra Pradesh">Andhra Pradesh</option>
+        <option value="Karnataka">Karnataka</option>
+        <!-- Add more state options -->
+    </select>
+
+    <label for="district">Select District:</label>
+    <select id="district" name="district" onchange="getJobDetails()" disabled>
+        <option value="">Select a District</option>
+        <!-- District options will be dynamically populated based on the selected state -->
+    </select>
+
+    <div id="jobDetails">
+        <h2>Job Details for <span id="selectedDistrict"></span></h2>
+        <ul id="jobsList">
+            <!-- Job details will be dynamically populated here -->
+        </ul>
+    </div>
+
+    <script>
+        const districtData = {
+            "Andhra Pradesh": [
+                "Anantapur",
+                    "Chittoor",
+                    "East Godavari",
+                    "Guntur",
+                    "Krishna",
+                    "Kurnool",
+                    "Nellore",
+                    "Prakasam",
+                    "Srikakulam",
+                    "Visakhapatnam",
+                    "Vizianagaram",
+                    "West Godavari",
+                    "YSR Kadapa"
+            ],
+            "Karnataka": [
+                "Bagalkot",
+                    "Ballari",
+                    "Belagavi",
+                    "Bengaluru Rural",
+                    "Bengaluru Urban",
+                    "Bidar",
+                    "Chamarajanagar",
+                    "Chikkaballapur",
+                    "Chikkamagaluru",
+                    "Chitradurga",
+                    "Dakshina Kannada",
+                    "Davanagere",
+                    "Dharwad",
+                    "Gadag",
+                    "Hassan",
+                    "Haveri",
+                    "Kalaburagi",
+                    "Kodagu",
+                    "Kolar",
+                    "Koppal",
+                    "Mandya",
+                    "Mysuru",
+                    "Raichur",
+                    "Ramanagara",
+                    "Shivamogga",
+                    "Tumakuru",
+                    "Udupi",
+                    "Uttara Kannada",
+                    "Vijayapura",
+                    "Yadgir"
+            ],
+            
+            // Add more states and their districts here
+        };
+
+        function populateDistricts() {
+            const stateSelect = document.getElementById('state');
+            const districtSelect = document.getElementById('district');
+            const selectedState = stateSelect.value;
+            districtSelect.innerHTML = '<option value="">Select a District</option>';
+            districtSelect.disabled = true;
+
+            if (selectedState) {
+                const districts = districtData[selectedState];
+                if (districts) {
+                    districts.forEach((district) => {
+                        const option = document.createElement('option');
+                        option.value = district;
+                        option.textContent = district;
+                        districtSelect.appendChild(option);
+                    });
+                    districtSelect.disabled = false;
+                }
+            }
+        }
+
+        function getJobDetails() {
+            const districtSelect = document.getElementById('district');
+            const selectedDistrict = districtSelect.value;
+            const jobDetailsDiv = document.getElementById('jobDetails');
+            const selectedDistrictSpan = document.getElementById('selectedDistrict');
+            const jobsList = document.getElementById('jobsList');
+            jobsList.innerHTML = '';
+
+            if (selectedDistrict) {
+                selectedDistrictSpan.textContent = selectedDistrict;
+                jobDetailsDiv.style.display = 'block';
+
+                // Sample job details for the selected district (you can add more jobs here)
+                const jobData = [
+                    { job: "Hotel Cook", phone: "xxx-xxxxxx", address: "yyyyy-yyyyyyyyyyyyyyyyyy" },
+                    { job: "Construction Worker", phone: "xxx-xxxxxx", address: "yyyyy-yyyyyyyyyyyyyyyyyy" },
+                    { job: "Accountant", phone: "xxx-xxxxxx", address: "yyyyy-yyyyyyyyyyyyyyyyyy" },
+                ];
+
+                jobData.forEach((job) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Location is ${selectedDistrict}, Job Available: ${job.job}, Phone: ${job.phone}, Address: ${job.address}`;
+                    jobsList.appendChild(listItem);
+                });
+            } else {
+                jobDetailsDiv.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
